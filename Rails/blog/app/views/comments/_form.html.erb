@@ -1,13 +1,24 @@
-<%= form_for ([@article, @article.comments.build]) do |f| %>
-<p>
-	<%= f.label :commenter %> <br>
-	<%= f.text_field :commenter %> <br>
-</p>
+<div class="well">
+	 <h3>Leave a Comment:</h4>
+<%= form_for ([@article, @article.comments.build]), role: "form" do |f| %>
+	<strong>Comment</strong>
+	<div class="form-group">		
+		<%= f.text_field :commenter, class: "form-control" %> <br>
+	 </div>
+	<strong> Commenter</strong>
+<div class="form-group">
+	<%= f.text_area :body , class: "form-control" %> <br>
+</div>
 
-<p>
-	<%= f.label :body %> <br>
-	<%= f.text_area :body %> <br>
-</p>
-
-<%= f.submit %>
+<%= f.submit "Comment", class: "btn btn-large btn-primary" %>
 <% end %>
+
+</div>
+                   
+                    <form role="form">
+                        <div class="form-group">
+                            <textarea class="form-control" rows="3"></textarea>
+                       
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                

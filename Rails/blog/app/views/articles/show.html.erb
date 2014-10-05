@@ -1,16 +1,23 @@
-<p>
-	<h2> <%= @article.title  %> </h2>
-</p>
-<p>
+
+<div class="col-lg-8">
+
+<h1> <%= @article.title  %> </h1>
+
+<p >
 	<%=  @article.text %>
 </p>
 
 <h2> Comments  </h2>
 	<%= render @article.comments %>
 
-<h2> Add a comment </h2>
+
+<h2 Add a comment </h2>
 	<%= render 'comments/form' %>
-	
+
+</div>
+
+
+
 
 
 <%= link_to 'Back', articles_path %> | <%= link_to 'Edit', edit_article_path(@article) %>

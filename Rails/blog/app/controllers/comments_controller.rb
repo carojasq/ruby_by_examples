@@ -6,7 +6,6 @@ class CommentsController < ApplicationController
     # Using devise with author model
 	before_action :authenticate_author!, only: [:destroy]
 
-
 	def create
 		@article =  Article.find(params[:article_id]) # Consequence of nesting
 		@comment = @article.comments.create(comment_params)

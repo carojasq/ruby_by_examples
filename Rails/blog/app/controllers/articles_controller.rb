@@ -20,6 +20,7 @@ class ArticlesController < ApplicationController
 
     def index # Intended for list available articles
         @articles = Article.all  # All articles 
+        puts @articles[0].to_s
     end
 
     def new
@@ -51,9 +52,11 @@ class ArticlesController < ApplicationController
         redirect_to articles_path
     end
 
+
+
     private
     def article_params
-        params.require(:article).permit(:title, :text)
+        params.require(:article).permit(:title, :text, :author_id)
     end
 
 end

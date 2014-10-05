@@ -1,0 +1,6 @@
+TODO
+* Check for a good front end (Bootstrap) http://startbootstrap.com/template-overviews/blog-post/
+* Include a search engine http://www.toptal.com/ruby-on-rails/elasticsearch-for-ruby-on-rails-an-introduction-to-chewy
+* Add category, and tags to content
+* Add relationship author article
+* Edit model author to add name

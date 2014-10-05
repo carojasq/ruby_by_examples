@@ -4,4 +4,7 @@ class Author < ActiveRecord::Base
   has_many :articles
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+  def to_s
+  	"#{email}"
+  end
 end

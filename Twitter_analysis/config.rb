@@ -1,0 +1,4 @@
+consumer_data = {
+  :consumer_key    => "YOUR_CONSUMER_KEY",
+  :consumer_secret => "YOUR_CONSUMER_SECRET",
+}

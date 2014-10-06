@@ -1,14 +1,4 @@
-<h1> Blog example </h2>
+<h2> Moved </h2>
 
-From getting started tutorial to a more complex blog application in rails 4.
-
-<h2> Instructions </h3>
-
-  ````bash
-bundle install
-rake db:migrate
-rails s
-  ````
-
-
-
+This app has been moved to a repository:
+https://github.com/carojasq/rails_blog

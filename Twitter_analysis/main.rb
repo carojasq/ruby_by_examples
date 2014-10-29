@@ -19,8 +19,7 @@ client = Twitter::REST::Client.new(CONSUMER_DATA)
 def client.collect_with_max_id(collection=[], max_id=nil, &block)
   response = yield(max_id)
   collection += response
-  puts collection
-  response.empty? ? collection.flatten : collect_with_max_id(collection, response.last.id - 1, &block)
+  2800 <= collection.count || response.empty? ? collection.flatten : collect_with_max_id(collection, response.last.id - 1, &block)
 end
 
 def client.get_all_tweets(user)
@@ -28,7 +27,7 @@ def client.get_all_tweets(user)
     options = {:count => 200, :include_rts => true}
     options[:max_id] = max_id unless max_id.nil?
     user_timeline(user, options)
-  end
+  end   
 end
 if ARGV[0].downcase =~ /^[a-z0-9\_]+$/
   username = ARGV[0]

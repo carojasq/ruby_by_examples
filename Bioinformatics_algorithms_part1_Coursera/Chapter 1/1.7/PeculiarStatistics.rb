@@ -18,9 +18,18 @@ def MinSkews(in_seq)
 	return skews.each_index.select{|i| skews[i]==min}
 end
 
+def MaxSkews(in_seq)
+	skews = Skew(in_seq)
+	puts skews.join " "
+	max = skews.max
+	return skews.each_index.select{|i| skews[i]==max}
+end
+
+
+puts MaxSkews("GATACACTTCCCAGTAGGTACTG").join " "
 #MinSkews
-in_seq = gets.chomp	
-puts MinSkews(in_seq).join(" ")
+#in_seq = gets.chomp	
+#puts MinSkews(in_seq).join(" ")
 
 
 #Skew input

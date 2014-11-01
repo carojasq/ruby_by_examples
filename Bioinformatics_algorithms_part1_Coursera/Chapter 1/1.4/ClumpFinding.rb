@@ -124,6 +124,8 @@ def ClumpFinding(in_seq, k, l, t)
 	return frequent_patterns
 end
 
+puts ClumpFinding("GCACAAGGCCGACAATAGGACGTAGCCTTGAAGACGACGTAGCGTGGTCGCATAAGTACAGTAGATAGTACCTCCCCCGCGCATCCTATTATTAAGTTAATT", 4, 30, 3)
+
 =begin 
     BetterClumpFinding(Genome, k, t, L)
         FrequentPatterns ← an empty set

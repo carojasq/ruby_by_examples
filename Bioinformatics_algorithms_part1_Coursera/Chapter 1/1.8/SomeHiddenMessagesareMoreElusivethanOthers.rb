@@ -6,27 +6,16 @@ def HammingDistance(s1, s2)
 	return count
 end
 
-def InmediateNeighbors(pattern)
-	neighborhood = [pattern]
-	nucleotides = ["A", "C", "G", "T"]
-	pl = pattern.length
-	(1..pattern.length).each do |i|
-		s = pattern[i-1]
-		(nucleotides-[s]).each do |n|
-			begin
-				#puts "First part '#{pattern.slice(0,i-1)}', then '#{n}', finishing with '#{pattern.slice(i-1, pl-i)}'"
-			    new_pattern = pattern.slice(0,i-1)+n+pattern.slice(i-1, pl-i)
-			rescue
-				new_pattern = pattern.slice(0,i-1).join("")+n+pattern.slice(i-1, pl-i).join("")
-			end
-			#puts new_pattern
-			neighborhood.push(new_pattern)
-			#puts "Replacing #{s} with #{n} in position #{i}"
-			#puts "Neighborhood #{neighborhood}"
-		end
-	end	
-	return neighborhood
+
+def ReverseComplement(in_seq)
+	maps = {'A' => 'T', 'T' => 'A', 'C' => 'G', 'G' => 'C'}
+	out_seq = ""
+	in_seq.split("").each do |l|
+		out_seq += maps[l]
+	end
+	return out_seq.reverse
 end
+
 
 
 def Suffix(pattern)
@@ -56,7 +45,6 @@ def PatternToInteger(pattern)
 	#return ["A", "C", "G", "T"].repeated_permutation(pattern.length).find_index(pattern.split(""))
 end
 
-
 def IntegerToPattern(integer, k)
 	if k==1
 		return NumbertoSymbol(integer)
@@ -69,6 +57,27 @@ def IntegerToPattern(integer, k)
 	#return ["A", "C", "G", "T"].repeated_permutation(pattern_length).take(integer+1).last.join("")
 end
 
+def InmediateNeighbors(pattern)
+	neighborhood = [pattern]
+	nucleotides = ["A", "C", "G", "T"]
+	pl = pattern.length
+	(1..pattern.length).each do |i|
+		s = pattern[i-1]
+		(nucleotides-[s]).each do |n|
+			begin
+				#puts "First part '#{pattern.slice(0,i-1)}', then '#{n}', finishing with '#{pattern.slice(i-1, pl-i)}'"
+			    new_pattern = pattern.slice(0,i-1)+n+pattern.slice(i-1, pl-i)
+			rescue
+				new_pattern = pattern.slice(0,i-1).join("")+n+pattern.slice(i-1, pl-i).join("")
+			end
+			#puts new_pattern
+			neighborhood.push(new_pattern)
+			#puts "Replacing #{s} with #{n} in position #{i}"
+			#puts "Neighborhood #{neighborhood}"
+		end
+	end	
+	return neighborhood
+end
 
 def Neighbors(pattern, d)
 	nucleotides = ["A", "C", "G", "T"]
@@ -127,28 +136,35 @@ def FrequentWordsWithMismatches(text, k, d)
 	frequent_patterns = []
 	close = []
 	frequency_array = []
+	puts "Initializing array"
 	(0..(4**k)-1).each do |i|
 		close[i] = 0
 		frequency_array[i] = 0
 	end
+	puts "Generating neighborhood"
 	(0..text.length-k).each do |i|
 		neighborhood = IterativeNeighbors(text.slice(i,k), d)
+		puts "This neighborhood measures #{neighborhood.length}, current position #{i.to_s}"
+
 		neighborhood.each do |p|
 			index = PatternToInteger(p)
 			close[index] = 1
 		end
     end
+    puts "Aproximate pattern counting"
     (0..(4**k)-1).each do |i|
     	if close[i]==1
     		pattern = IntegerToPattern(i, k)
     		aprox_count =  ApproximatePatternCount(text, pattern, d)
-    		puts "#{aprox_count}, #{text}, #{pattern}"
+    		#puts "#{aprox_count}, #{text}, #{pattern}"
     		frequency_array[i]= aprox_count
     	end
     end
     maxcount = frequency_array.max
+    puts "Selecting patterns with max count #{maxcount}"
     indices = frequency_array.each_index.select{|i| frequency_array[i]==maxcount}
-    puts "Here are the indices #{indices.join ' '}"
+
+    #puts "Here are the indices #{indices.join ' '}"
     indices.each do |i|
     	frequent_patterns << IntegerToPattern(i, k)
     end
@@ -156,16 +172,66 @@ def FrequentWordsWithMismatches(text, k, d)
 end
 
 
-puts IterativeNeighbors("CCCC", 3).join(" ")
-puts IterativeNeighbors("CCCC", 3).count()
-puts ApproximatePatternCount("CATGCCATTCGCATTGTCCCAGTGA", "CCC", 2)
-puts HammingDistance("TGACCCGTTATGCTCGAGTTCGGTCAGAGCGTCATTGCGAGTAGTCGTTTGCTTTCTCAAACTCC", "GAGCGATTAAGCGTGACAGCCCCAGGGAACCCACAAAACGTGATCGCAGTCCATCCGATCATACA")
+def FrequentWordsWithMismatchesandReverseComplement(text, k, d)
+	frequent_patterns = []
+	close = []
+	frequency_array = []
+	puts "Initializing array"
+	(0..(4**k)-1).each do |i|
+		close[i] = 0
+		frequency_array[i] = 0
+	end
+	puts "Generating neighborhood"
+	(0..text.length-k).each do |i|
+		neighborhood = IterativeNeighbors(text.slice(i,k), d)
+		puts "This neighborhood measures #{neighborhood.length}, current position #{i.to_s}"
+		neighborhood.each do |p|
+			index = PatternToInteger(p)
+			close[index] = 1
+		end
+    end
+    puts "Counting Aproximate patterns with reverse "
+    (0..(4**k)-1).each do |i|
+    	if close[i]==1
+    		pattern = IntegerToPattern(i, k)
+    		aprox_count =  ApproximatePatternCount(text, pattern, d) + ApproximatePatternCount(text, ReverseComplement(pattern), d)
+    		#Countd(Text, Pattern)+ Countd(Text, Pattern)
+    		#puts "#{aprox_count}, #{text}, #{pattern}"
+    		frequency_array[i]= aprox_count
+    	end
+    end
+    maxcount = frequency_array.max
+    puts "Selecting patterns with max count #{maxcount}"
+    indices = frequency_array.each_index.select{|i| frequency_array[i]==maxcount}
+
+    #puts "Here are the indices #{indices.join ' '}"
+    indices.each do |i|
+    	frequent_patterns << IntegerToPattern(i, k)
+    end
+    return frequent_patterns
+end
+
+
+#FrequentWordsWithMismatches
+in_seq1 = gets.chomp
+ps = gets.chomp
+ps = ps.split(" ")
+k = ps[0].to_i
+d = ps[1].to_i
+puts "Seq lenght = #{in_seq1.length}, #{k.to_s}k-mer, hamming distance = #{d} "
+puts FrequentWordsWithMismatchesandReverseComplement(in_seq1, k,d).join " "
+
+
+#puts IterativeNeighbors("CCCC", 3).join(" ")
+#puts IterativeNeighbors("CCCC", 3).count()
+#puts ApproximatePatternCount("CATGCCATTCGCATTGTCCCAGTGA", "CCC", 2)
+#puts HammingDistance("TGACCCGTTATGCTCGAGTTCGGTCAGAGCGTCATTGCGAGTAGTCGTTTGCTTTCTCAAACTCC", "GAGCGATTAAGCGTGACAGCCCCAGGGAACCCACAAAACGTGATCGCAGTCCATCCGATCATACA")
 =begin
 
 #FrequentWordsWithMismatches
 in_seq1 = gets.chomp
 ps = gets.chomp
-ps = ps.split(" ")GAGCGATTAAGCGTGACAGCCCCAGGGAACCCACAAAACGTGATCGCAGTCCATCCGATCATACA
+ps = ps.split(" ")
 k = ps[0].to_i
 d = ps[1].to_i
 puts FrequentWordsWithMismatches(in_seq1, k, d).join " "

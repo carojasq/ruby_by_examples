@@ -18,3 +18,10 @@ F 147
 R 156
 Y 163
 W 186
+
+	aminoacid_mass =   LoadMassTable()
+	prefix_mass =  [0]
+	(1..peptide.length).each do  |i|
+		prefix_mass.push(prefix_mass[i-1] + aminoacid_mass[peptide[i-1]])
+	end
+	cyclic_spectrum = [0]

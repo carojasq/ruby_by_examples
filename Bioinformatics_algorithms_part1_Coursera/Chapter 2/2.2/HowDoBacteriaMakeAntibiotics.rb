@@ -90,7 +90,11 @@ def PeptideEncodingProblem(in_seq, peptides)
 	return output
 end
 
-puts TranslateProtein("PRTEIN") & ["CCGAGGACCGAAAUCAAC", "CCCAGUACCGAAAUUAAC", "CCAAGAACAGAUAUCAAU", "CCUCGUACAGAAAUCAAC"
+protein = "VKLFPWFNQY"
+#puts TranslateRNA(in_seq)
+puts TranslateProtein(protein).length
+
+#puts TranslateProtein("PRTEIN") & ["CCGAGGACCGAAAUCAAC", "CCCAGUACCGAAAUUAAC", "CCAAGAACAGAUAUCAAU", "CCUCGUACAGAAAUCAAC"
 =begin
 in_dna = gets.chomp
 in_pep = gets.chomp
@@ -103,10 +107,9 @@ puts dna_strings.length
 #puts TranslateDNAWithReverseComplement(in_seq).join(" ")
 
 #TranslateRNA
-#puts TranslateRNA(in_seq)
+
 #in_seq = gets.chomp	
-#protein = "VKLFPWFNGT"
 #protein = "VV"
 #puts LoadReverseTranslations()
-#puts TranslateProtein(protein).length
+
 =end
